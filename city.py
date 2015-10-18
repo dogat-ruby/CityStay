@@ -3,15 +3,16 @@
 # okay to declare methods here (does not have to be though), even if
 # they are empty.
 class City:
-    def __init__(self, listCities):
-        self.listCities = listCities
+    def __init__(self, name):
+        self.name = name
+        self.fetched = False
     def fetchDataFromAPI():
         return # (XML file)
-    def parseXML():
+    def parseXML(self):
         return # (list of dicts)
-    def pushToSQL():
+    def pushToSQL(self):
         return #Boolean: to indicate if okay or not?
-    def fetchFromSQL():
+    def fetchFromSQL(self):
         return # (list of dicts)
     def calculate(dict, operation):
         result = 0
@@ -24,14 +25,16 @@ class City:
         elif operation == "count":
             print("Count")
         return result #(result of operation: mean, max, count, etc)
-    def updateRequest(city, operation, bool):
-        if not bool:
+    def updateRequest(city_name, operation):
+        self.name = city_name
+        if not self.fetched:
             xmlFile = fetchDataFromAPI(city)
             dict = parseXML(xmlFile)
-            pushToSQL(dict)
+            city.create(dict)
         else:
             dict = fetchFromSQL(city)
             result = calculate(dict, operation)
+        self.fetched = True
         return result
 			
 
