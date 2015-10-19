@@ -1,16 +1,37 @@
-# Keep this list alphabetically sorted.
-
 *.box
 *.swp
 *.un~
 *.vagrant
 .#*
-.DS_Store
 .idea
 .tm_properties
-log
-tags
-TAGS
 .tags*
-tmp
 bin
+log
+tmp
+tags
+
+# Python cache
+__pycache__
+
+# User-specific files
+*.suo
+*.user
+
+# Mac desktop service store files
+.DS_Store
+/src/3fjtrdxe.dt5
+/src/j1xrvkr3.mrf
+TAGS
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Others
