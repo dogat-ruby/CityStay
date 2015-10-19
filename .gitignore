@@ -1,0 +1,16 @@
+# Keep this list alphabetically sorted.
+
+*.box
+*.swp
+*.un~
+*.vagrant
+.#*
+.DS_Store
+.idea
+.tm_properties
+log
+tags
+TAGS
+.tags*
+tmp
+bin
