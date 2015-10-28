@@ -1,0 +1,37 @@
+brokenarrow
+chicago*
+chulavista
+cityoflacrosse
+cityofracine
+claremontca
+cosm
+cupertino
+dane
+erie
+fresnocounty!
+gocolumbiamo
+jcc
+lexington
+louisville!
+mesa
+metro
+milwaukee
+minneapolismn*
+mtc!
+nyc-training
+olympia
+pittsburgh*
+princegeorgescountymd
+racine
+richmondva
+riversideca
+sanantonio
+scvwd
+seattle*
+seattle-training
+stockton
+sunnyvaleca
+westalliswi
+
+*recommended ones
+!not recommended ones (they have historical data loaded from 3rd party vendors, might not be accurate)
