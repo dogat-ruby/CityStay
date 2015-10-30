@@ -23,7 +23,6 @@ Event.create_table([True])
 # Drop tables
 # Matter.drop_table([True])
 # Event.drop_table([True])
-pushToDb(matterListDict)
 
 def sanitize_dict(dictionary):
   result = []
@@ -56,6 +55,9 @@ def messageBox(city, cat):
     Label(frame, text=result, font="Symbol 11").grid(row=6, column=0, columnspan=6, sticky=W+E)
   else:
     messagebox.showinfo(title="Error", message="No category selected!")
+
+# import data 
+pushToDb(matterListDict)
 
 # Create tkinter window
 root = Tk()
