@@ -1,6 +1,5 @@
 # coding: utf-8
-import re
-import datetime
+from calculations import *
 
 # Parent class
 # Given that children share same methods/functions, I think it’s
@@ -40,57 +39,7 @@ class Matters(City):
         print("Matters")
     def calculate(self, operation = 0):
         if operation == 0:
-            MatterIntroDate = [d['MatterIntroDate']    for d in self.list_of_dict     if d['MatterIntroDate']]
-            #print("MatterIntroDate = ", MatterIntroDate)  
-            for index in range (len(MatterIntroDate)):
-                date = re.split('T', MatterIntroDate[index])
-                MatterIntroDate[index] = date[0]
-            #print("New MatterIntroDate = ", MatterIntroDate)
-            print('length of MatterIntroDate = ',len(MatterIntroDate))
-
-            ##MatterAgendaDate
-            MatterAgendaDate = [d['MatterAgendaDate']    for d in self.list_of_dict     if d['MatterAgendaDate']]
-            #print("MatterAgendaDate = ",MatterAgendaDate)
-            for index in range (len(MatterAgendaDate)):
-                date = re.split('T', MatterAgendaDate[index])
-                MatterAgendaDate[index] = date[0]
-            #print("New MatterIntroDate = ", MatterAgendaDate)
-            print('length of MatterAgendaDate = ',len(MatterAgendaDate))
-            array_len = len(MatterAgendaDate)
-
-            total = 0
-            for index in range (array_len):
-                try:
-                    date1 = MatterAgendaDate[index]
-                except IndexError:
-                    print("element not present MatterAgendaDate at index = ",index)
-                try:
-                    date1 = MatterIntroDate[index]
-                except IndexError:
-                    print("element not present MatterIntroDate at index = ",index)
-
-                date = MatterIntroDate[index]
-                if(re.search(r'null',date)):
-                    continue	
-                (y1, m1, d1) = date.split('-')
-                date = MatterAgendaDate[index]
-                #print('date2 = ',date)
-                if(re.search(r'null',date)):
-                    continue
-                (y2, m2, d2) = date.split('-')
-                (y1, m1, d1, y2, m2, d2) = int(y1), int(m1), int(d1), int(y2), int(m2), int(d2)
-                d1 = datetime.date(y1, m1, d1)
-                d2 = datetime.date(y2, m2, d2)
-                delta = d2 - d1
-                print('Diff between Matter Intro date and Matter Agenda date = ',delta.days)
-                # Adding to total
-                total = total + delta.days
-
-            total_days = total / len(MatterAgendaDate)
-            total_days_int = int(total / len(MatterAgendaDate))
-            total_hours = int((total_days - total_days_int) * 24)
-            result = 'Average: ' + str(total_days_int) + ' days and ' + str(total_hours) + ' hours'
-            print(result)
+            result = averageMatterTime()
             return result
 
 # Events: child of City
