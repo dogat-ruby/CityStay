@@ -17,8 +17,8 @@ def messageBox(city, cat):
         Label(frame, text="   ", font="Symbol 11").grid(row=5)
         cityMatters = Matters(matterListDict)
         result = cityMatters.calculate(0)
-        print(result)
-        Label(frame, text=result, font="Symbol 11").grid(row=6, column=0, columnspan=6, sticky=W+E)
+        print('From Intro to Agenda:', result)
+        Label(frame, text=('From Intro to Agenda:\n' + result), font="Symbol 11").grid(row=6, column=0, columnspan=6, sticky=W+E)
     else:
         messagebox.showinfo(title="Error", message="No category selected!")
     
