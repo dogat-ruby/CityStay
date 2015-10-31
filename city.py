@@ -1,4 +1,5 @@
 # coding: utf-8
+import fetchDataFromAPI as API
 from calculations import *
 matterListDict = list_of_dict
 
@@ -35,9 +36,14 @@ class City:
 
 # Matters: child of City
 class Matters(City):
-    def __init__(self, dictList):
+    def __init__(self, name, dictList):
+        self.name = name
         self.list_of_dict = dictList
-        print("Matters")
+        #("Matters")
+    def fetchDataFromAPI(self, category = "matters"):
+        API.fetchDataFromAPI(self.name, category)
+        self.fetched = True
+        return
     def calculate(self, operation = 0):
         if operation == 0:
             # Item 1
@@ -48,19 +54,24 @@ class Matters(City):
             #print('\nThe total number of days per type:')
             #print(dictTypeDuration)
             dictTypeAverageDuration = getAverageDurationPerType(dictTypeNumber, dictTypeDuration)
-            print('\n1) The average duration (in days) per type:')
-            print(dictTypeAverageDuration)
+            #print('\n1) The average duration (in days) per type:')
+            #print(dictTypeAverageDuration)
             return dictTypeAverageDuration
         elif operation == 1:
             # Item 2
-            dictTypeStatus = get_Matter_Status()
-            print('\n2) Number of similar statuses per type of matter:')
-            print(dictTypeStatus)
+            dictBodyNumber = get_Matter_Body_Name()
+            #print('\n3) Number of files per body:')
+            #print(dictBodyNumber)
+            return dictBodyNumber
         elif operation == 2:
             # Item 3
-            dictBodyNumber = get_Matter_Body_Name()
-            print('\n3) Number of files per body:')
-            print(dictBodyNumber)
+            dictTypeNumber = get_Matter_Type_Name()
+            #print('\nThe type and number of matter types are:')
+            #print(dictTypeNumber)
+            dictTypeStatus = get_Matter_Status()
+            #print('\n2) Number of similar statuses per type of matter:')
+            #print(dictTypeStatus)
+            return dictTypeNumber, dictTypeStatus
 
 # Events: child of City
 class Events(City):
@@ -69,7 +80,9 @@ class Events(City):
         
 # For testing only
 if __name__ == "__main__":
-    cityMatters = Matters(matterListDict)
+    cityMatters = Matters(name = "chicago", dictList = matterListDict)
     cityMatters.calculate(operation = 0)
     cityMatters.calculate(operation = 1)
     cityMatters.calculate(operation = 2)
+    cityMatters.fetchDataFromAPI()
+    print(cityMatters.fetched)
