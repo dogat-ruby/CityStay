@@ -14,7 +14,7 @@ class Matter(Concern):
   #   print("Matter")
 
   def required_keys():
-    return ['Id', 'Title', 'BodyName', 'EnactmentDate', 'IntroDate', 'PassedDate', 'StatusName', 'TypeName', 'CityId']
+    return ['Id', 'Title', 'BodyName', 'EnactmentDate', 'IntroDate', 'AgendaDate', 'PassedDate', 'StatusName', 'TypeName', 'CityId']
 
   def create_with_dict(dict, city_id):
     for record in dict:
