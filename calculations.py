@@ -2,6 +2,7 @@
 import re
 import datetime
 
+
 ##################################################          Subroutines         ###########################################
 def getMatterIntroDate(list_of_dict):
     MatterIntroDate = [d['MatterIntroDate']    for d in list_of_dict     if d['MatterIntroDate']]
@@ -99,19 +100,19 @@ def get_Matter_Body_Name(list_of_dict):
     return (matterBodyName)	
  
 def get_Matter_Status(list_of_dict):  
-  matterStatus = {}
-  for d in list_of_dict:
-    if d['MatterTypeName']:
-      #print(d['MatterStatusName'])
-      if d['MatterTypeName'] in matterStatus:
-        #~ print(matterStatus[d['MatterTypeName']][d['MatterStatusName']])
-        if d['MatterStatusName'] in matterStatus[d['MatterTypeName']]:
-          matterStatus[d['MatterTypeName']][d['MatterStatusName']] += 1
-        else:
-          matterStatus[d['MatterTypeName']][d['MatterStatusName']] = 1
-      else:
-        matterStatus[d['MatterTypeName']] = {}
-  return matterStatus
+    matterStatus = {}
+    for d in list_of_dict:
+        if d['MatterTypeName']:
+            #print(d['MatterStatusName'])
+            if d['MatterTypeName'] in matterStatus:
+                #~ print(matterStatus[d['MatterTypeName']][d['MatterStatusName']])
+                if d['MatterStatusName'] in matterStatus[d['MatterTypeName']]:
+                    matterStatus[d['MatterTypeName']][d['MatterStatusName']] += 1
+                else:
+                    matterStatus[d['MatterTypeName']][d['MatterStatusName']] = 1
+            else:
+                matterStatus[d['MatterTypeName']] = {}
+    return matterStatus
 
 def get_Matter_Intro_Agenda(list_of_dict):
     matterTotalDays = {}
@@ -119,7 +120,10 @@ def get_Matter_Intro_Agenda(list_of_dict):
         if d['MatterTypeName']:
             #print(d['MatterIntroDate'], d['MatterAgendaDate'])
             MatterIntroDate = d['MatterIntroDate']
-            MatterAgendaDate = d['MatterAgendaDate']
+            if d['MatterAgendaDate']:
+                MatterAgendaDate = d['MatterAgendaDate']
+            else:
+                MatterAgendaDate = d['MatterPassedDate']
             try:
                 diff = diffInDates(MatterIntroDate, MatterAgendaDate)
                 #print(d['MatterTypeName'], ':', diff)
@@ -186,3 +190,4 @@ if __name__ == "__main__":
   dictBodyNumber = get_Matter_Body_Name(list_of_dict)
   print('\n3) Number of files per body:')
   print(dictBodyNumber)
+
