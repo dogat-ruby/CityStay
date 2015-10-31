@@ -87,14 +87,14 @@ def generateReport(city):
       text_body = ''
       
       # Header
-      canvas_id = canvas[2].create_text(text_offset+5, row, font="Symbol 11 bold", anchor = "nw")
+      canvas_id = canvas[2].create_text(text_offset+5, row, font="Segoe 11 bold", anchor = "nw")
       text_header = key + ' : ' + str(results[2][0][key]) + '\n'
       canvas[2].itemconfig(canvas_id, text=text_header)
       row += 18
       
       # Body
       key_dict = results[2][1][key]
-      canvas_id = canvas[2].create_text(text_offset+5, row, font="Symbol 11", anchor = "nw")
+      canvas_id = canvas[2].create_text(text_offset+5, row, font="Segoe 11", anchor = "nw")
       count = 0
       for status in sorted(key_dict):
           count += 1
@@ -113,31 +113,31 @@ root.resizable(0, 0)
 root.minsize(width=400, height=40)
 # Create tkinter frame
 frame = tk.Frame(root, width=400, height=400)
-frame.option_add('*Dialog.msg.font', 'Symbol 11')
+frame.option_add('*Dialog.msg.font', 'Segoe 11')
 frame.pack()
 
 # Space out content from top of window
-tk.Label(frame, text= "   ", font="Symbol 11").grid(row=0, column=0, sticky=tk.W+tk.E)
+tk.Label(frame, text= "   ", font="Segoe 11").grid(row=0, column=0, sticky=tk.W+tk.E)
 
 # Cities
-labelCity = tk.Label(frame, text= " Select City:  ", font="Symbol 11").grid(row=1, column=0, sticky=tk.W)
+labelCity = tk.Label(frame, text= " Select City:  ", font="Segoe 11").grid(row=1, column=0, sticky=tk.W)#Segoe 11
 # Create city drop list
 cityName = tk.StringVar(frame)
 cityName.set(CITIES[0]) # Default value
 drop = tk.OptionMenu(frame, cityName, *CITIES)
-drop.config(font=('Symbol',11),width=12)
-drop['menu'].config(font=('Symbol',11))
+drop.config(font=('Segoe 11',11),width=12)
+drop['menu'].config(font=('Segoe 11',11))
 drop.grid(row=1, column=1, sticky=tk.W)
 
 # Prevent Tkinter to resize...
-tk.Label(frame, text="  ", font="Symbol 11").grid(row=1, column=2)
+tk.Label(frame, text="  ", font="Segoe 11").grid(row=1, column=2)
 
 # Generate button
-genButton = tk.Button(frame, width=22, text="Generate Report", font="Symbol 12 bold", command=lambda: generateReport(city=cityName))
+genButton = tk.Button(frame, width=22, text="Generate Report", font="Segoe 11", command=lambda: generateReport(city=cityName))
 genButton.grid(row=1, column=3, sticky=tk.E)
 
 # Space between user input and report tabs
-tk.Label(frame, text="   ", font="Symbol 11").grid(row=2)
+tk.Label(frame, text="   ", font="Segoe 11").grid(row=2)
 
 # Initialize classes
 for item in CITIES:
