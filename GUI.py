@@ -1,29 +1,28 @@
 import tkinter as tk
 from tkinter import messagebox
 import ttk as ttk
-#from tkinter import Tk, StringVar, ttk
 from city import *
 
+# Dictionary of city classes
 citiesDict = {}
 
+# List of cities
 CITIES = [
     "Seattle",
     "Chicago",
     "Pittsburgh"
 ]
 
+# Generate report function
 def generateReport(city):
+    # Debug
     print('\n>', city.get(), '\n')
-    #cityMatters = Matters(city.get(), matterListDict)
+
+    # Grabbing results
     results = []
     results = citiesDict[city.get()].updateRequest()
 
-    #~ results_0 = cityMatters.calculate(0)
-    #~ results_1 = cityMatters.calculate(1)
-    #~ (results_2_0, results_2_1) = cityMatters.calculate(2)
-    
-    #~ messagebox.showinfo(title="City", message="City: " + str(city.get()) + "\nCategory: " + str(cat.get()))
-    
+    # Creating notebook and canvases
     notebook = ttk.Notebook(frame)
     tab = []
     canvas = []
@@ -42,9 +41,8 @@ def generateReport(city):
         scrolly = tk.Scrollbar(tab[i], orient=tk.VERTICAL, command=canvas[i].yview)
         scrolly.pack(side=tk.RIGHT, fill=tk.Y)
         canvas[i].config(xscrollcommand=scrollx.set, yscrollcommand=scrolly.set, scrollregion=(0,0,800,800))
-        #canvas.grid(row=rowNb+1, column=0, columnspan=6, sticky=tk.W)
         canvas[i].pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        
+    
     notebook.grid(row=3, column=0, columnspan=4, sticky=tk.W)
     
     text_offset = 10
@@ -53,9 +51,6 @@ def generateReport(city):
     text = ''
     for key in sorted(results[0]):
         text += key + ' : ' + str(results[0][key]) + ' days' + '\n'
-        #print(text)
-        #tk.Label(tab1, text=text, font="Symbol 11").grid(row=rowNb+1, column=0, columnspan=6, sticky=tk.W)
-    #print(text)
     canvas_id = canvas[0].create_text(text_offset, 10, font="Symbol 11", anchor = "nw")
     canvas[0].itemconfig(canvas_id, text=text)
     print('... Done')
@@ -65,9 +60,6 @@ def generateReport(city):
     text = ''
     for key in sorted(results[1]):
         text += key + ' : ' + str(results[1][key]) + '\n'
-        #print(text)
-        #tk.Label(tab2, text=text, font="Symbol 11").grid(row=rowNb+1, column=0, columnspan=6, sticky=tk.W)
-    #print(text)
     canvas_id = canvas[1].create_text(text_offset, 10, font="Symbol 11", anchor = "nw")
     canvas[1].itemconfig(canvas_id, text=text)
     print('... Done')
@@ -92,7 +84,6 @@ def generateReport(city):
         for status in sorted(key_dict):
             count += 1
             text_body += '  ' + status + ' : ' + str(key_dict[status]) + '\n'
-            #tk.Label(tab3, text=text_body, font="Symbol 11").grid(row=rowNb, column=0, columnspan=6, sticky=tk.W)
         canvas[2].itemconfig(canvas_id, text=text_body)
         
         row += count * 16 + 5
@@ -110,6 +101,7 @@ frame = tk.Frame(root, width=400, height=400)
 frame.option_add('*Dialog.msg.font', 'Symbol 11')
 frame.pack()
 
+# Space out content from top of window
 tk.Label(frame, text= "   ", font="Symbol 11").grid(row=0, column=0, sticky=tk.W+tk.E)
 
 # Cities
@@ -122,18 +114,6 @@ drop.config(font=('Symbol',11),width=12)
 drop['menu'].config(font=('Symbol',11))
 drop.grid(row=1, column=1, sticky=tk.W)
 
-
-# Categories
-#~ tk.Label(frame, text= "Select Category:", font="Symbol 11").grid(row=0, column=4, columnspan=2, sticky=tk.W)
-#~ #Create category radio list
-#~ category = tk.IntVar()
-#~ category.set(0)
-#~ tk.Radiobutton(frame, text = "Matter", variable=category, value=1, font="Symbol 11").grid(row=1, column=4, columnspan=2, sticky=tk.W)
-#~ tk.Radiobutton(frame, text = "Event", variable=category, value=2, font="Symbol 11").grid(row=2, column=4, columnspan=2, sticky=tk.W)
-
-# Column Separation
-#tk.Label(frame, text="  ", font="Symbol 11").grid(row=0, column=2)
-
 # Prevent Tkinter to resize...
 tk.Label(frame, text="  ", font="Symbol 11").grid(row=1, column=2)
 
@@ -141,8 +121,10 @@ tk.Label(frame, text="  ", font="Symbol 11").grid(row=1, column=2)
 genButton = tk.Button(frame, width=22, text="Generate Report", font="Symbol 12 bold", command=lambda: generateReport(city=cityName))
 genButton.grid(row=1, column=3, sticky=tk.E)
 
+# Space between user input and report tabs
 tk.Label(frame, text="   ", font="Symbol 11").grid(row=2)
 
+# Initialize classes
 for item in CITIES:
     citiesDict[item] = Matters(item)
 
