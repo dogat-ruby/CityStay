@@ -99,19 +99,19 @@ def get_Matter_Body_Name(list_of_dict):
     return (matterBodyName)	
  
 def get_Matter_Status(list_of_dict):  
-    matterStatus = {}
-    for d in list_of_dict:
-        if d['MatterTypeName']:
-            #print(d['MatterStatusName'])
-            if d['MatterTypeName'] in matterStatus:
-                #~ print(matterStatus[d['MatterTypeName']][d['MatterStatusName']])
-                if d['MatterStatusName'] in matterStatus[d['MatterTypeName']]:
-                    matterStatus[d['MatterTypeName']][d['MatterStatusName']] += 1
-                else:
-                    matterStatus[d['MatterTypeName']][d['MatterStatusName']] = 1
-            else:
-                matterStatus[d['MatterTypeName']] = {}
-    return matterStatus
+  matterStatus = {}
+  for d in list_of_dict:
+    if d['MatterTypeName']:
+      #print(d['MatterStatusName'])
+      if d['MatterTypeName'] in matterStatus:
+        #~ print(matterStatus[d['MatterTypeName']][d['MatterStatusName']])
+        if d['MatterStatusName'] in matterStatus[d['MatterTypeName']]:
+          matterStatus[d['MatterTypeName']][d['MatterStatusName']] += 1
+        else:
+          matterStatus[d['MatterTypeName']][d['MatterStatusName']] = 1
+      else:
+        matterStatus[d['MatterTypeName']] = {}
+  return matterStatus
 
 def get_Matter_Intro_Agenda(list_of_dict):
     matterTotalDays = {}
@@ -133,56 +133,56 @@ def get_Matter_Intro_Agenda(list_of_dict):
     return matterTotalDays
     
 def averageMatterTime(list_of_dict):
-    ##Obtain MatterIntroDate	
-    MatterIntroDate = getMatterIntroDate(list_of_dict)	
-    ##Obtain MatterAgendaDate
-    MatterAgendaDate = getMatterAgendaDate(list_of_dict)
-    ##Obtain Difference between MatterIntroDate and MatterAgendaDate
-    differenceInDates = diffInDates(MatterIntroDate, MatterAgendaDate)
-    ##Obtain Total of differences
-    total = 0
-    for date in differenceInDates:
-        total = total + date
-    #print (total)
-    
-    total_days = total / len(MatterAgendaDate)
-    total_days_int = int(total / len(MatterAgendaDate))
-    total_hours = ((total_days - total_days_int) * 24)
-    total_hours_int = int((total_days - total_days_int) * 24)
-    total_min_int = int((total_days - total_days_int - total_hours_int / 24) * 1440)
-    result = str(total_days_int) + ' days, ' + str(total_hours_int) + ' hours and ' + str(total_min_int) + ' minutes'
-    #print(result)
-    return result
+  ##Obtain MatterIntroDate	
+  MatterIntroDate = getMatterIntroDate(list_of_dict)	
+  ##Obtain MatterAgendaDate
+  MatterAgendaDate = getMatterAgendaDate(list_of_dict)
+  ##Obtain Difference between MatterIntroDate and MatterAgendaDate
+  differenceInDates = diffInDates(MatterIntroDate, MatterAgendaDate)
+  ##Obtain Total of differences
+  total = 0
+  for date in differenceInDates:
+      total = total + date
+  #print (total)
+  
+  total_days = total / len(MatterAgendaDate)
+  total_days_int = int(total / len(MatterAgendaDate))
+  total_hours = ((total_days - total_days_int) * 24)
+  total_hours_int = int((total_days - total_days_int) * 24)
+  total_min_int = int((total_days - total_days_int - total_hours_int / 24) * 1440)
+  result = str(total_days_int) + ' days, ' + str(total_hours_int) + ' hours and ' + str(total_min_int) + ' minutes'
+  #print(result)
+  return result
 
 def getAverageDurationPerType(dictNumbers, dictDays):
-    averageMatterDuration = {}
-    for key in dictNumbers:
-        try:
-            averageMatterDuration[key] = round(dictDays[key] / dictNumbers[key], 2)
-        except:
-            #print('Error calculating average duration for', key)
-            continue
-    return averageMatterDuration
+  averageMatterDuration = {}
+  for key in dictNumbers:
+    try:
+      averageMatterDuration[key] = round(dictDays[key] / dictNumbers[key], 2)
+    except:
+      #print('Error calculating average duration for', key)
+      continue
+  return averageMatterDuration
 
 ##################################################          Main_Program         ###########################################
 if __name__ == "__main__": 
-    # Item 1
-    dictTypeNumber = get_Matter_Type_Name(list_of_dict)
-    #print('\nThe type and number of matter types are:')
-    #print(dictTypeNumber)	
-    dictTypeDuration = get_Matter_Intro_Agenda(list_of_dict)
-    #print('\nThe total number of days per type:')
-    #print(dictTypeDuration)
-    dictTypeAverageDuration = getAverageDurationPerType(dictTypeNumber, dictTypeDuration)
-    print('\n1) The average duration (in days) per type:')
-    print(dictTypeAverageDuration)
-    
-    # Item 2
-    dictTypeStatus = get_Matter_Status(list_of_dict)
-    print('\n2) Number of similar statuses per type of matter:')
-    print(dictTypeStatus)
-    
-    # Item 3
-    dictBodyNumber = get_Matter_Body_Name(list_of_dict)
-    print('\n3) Number of files per body:')
-    print(dictBodyNumber)
+  # Item 1
+  dictTypeNumber = get_Matter_Type_Name(list_of_dict)
+#print('\nThe type and number of matter types are:')
+  #print(dictTypeNumber)	
+  dictTypeDuration = get_Matter_Intro_Agenda(list_of_dict)
+  #print('\nThe total number of days per type:')
+  #print(dictTypeDuration)
+  dictTypeAverageDuration = getAverageDurationPerType(dictTypeNumber, dictTypeDuration)
+  print('\n1) The average duration (in days) per type:')
+  print(dictTypeAverageDuration)
+  
+  # Item 2
+  dictTypeStatus = get_Matter_Status(list_of_dict)
+  print('\n2) Number of similar statuses per type of matter:')
+  print(dictTypeStatus)
+  
+  # Item 3
+  dictBodyNumber = get_Matter_Body_Name(list_of_dict)
+  print('\n3) Number of files per body:')
+  print(dictBodyNumber)

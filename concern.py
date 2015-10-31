@@ -1,6 +1,4 @@
 import sqlite3
-import sys
-import os
 import re
 import datetime
 from peewee.peewee import *
@@ -30,7 +28,6 @@ class Matter(Concern):
   def __init__(self):
     super(Matter, self).__init__()
     self.list_of_dict = []
-    print("Matter")
 
   def required_keys():
     return ['Id', 'Title', 'BodyName', 'EnactmentDate', 'IntroDate', 'AgendaDate', 'PassedDate', 'StatusName', 'TypeName']
@@ -38,6 +35,7 @@ class Matter(Concern):
   def create_with_dict(dict, city_name):
     skip_count = 0
     # Another way to mass insert is Model.create(*dict)
+    print("- Importing {0} records".format(len(dict)))
     for record in dict:
       id = int(record['RecordId'])
       if Matter.select().where(Matter.record_id == id).count() > 0:
@@ -56,7 +54,7 @@ class Matter(Concern):
         type_name = record['TypeName'],
         city_name = city_name
       )
-    print("Skipping #{0} records".format(skip_count))
+    print("  > Skipped #{0} records".format(skip_count))
 
   def build_dict(self, city_name):
     dict = []
@@ -79,6 +77,10 @@ class Matter(Concern):
     self.list_of_dict = dict
     self.save()
 
+  def fetchDataFromAPI(self, category = "matters"):
+    API.fetchDataFromAPI(self.name, category)
+    self.fetched = True
+    return
 
   def calculate(self, operation = 0):
     if operation == 0:
@@ -95,14 +97,19 @@ class Matter(Concern):
       return dictTypeAverageDuration
     elif operation == 1:
       # Item 2
-      dictTypeStatus = get_Matter_Status(self.list_of_dict)
-      print('\n2) Number of similar statuses per type of matter:')
-      print(dictTypeStatus)
+      dictBodyNumber = get_Matter_Body_Name(self.list_of_dict)
+      #print('\n3) Number of files per body:')
+      #print(dictBodyNumber)
+      return dictBodyNumber
     elif operation == 2:
       # Item 3
-      dictBodyNumber = get_Matter_Body_Name(self.list_of_dict)
-      print('\n3) Number of files per body:')
-      print(dictBodyNumber)
+      dictTypeNumber = get_Matter_Type_Name(self.list_of_dict)
+      #print('\nThe type and number of matter types are:')
+      #print(dictTypeNumber)
+      dictTypeStatus = get_Matter_Status(self.list_of_dict)
+      #print('\n2) Number of similar statuses per type of matter:')
+      #print(dictTypeStatus)
+      return dictTypeNumber, dictTypeStatus
 
 class Event(Concern):
   def nothing():

@@ -1,5 +1,5 @@
 # coding: utf-8
-from calculations import *
+import fetchDataFromAPI as API
 
 # Parent class
 # Given that children share same methods/functions, I think it’s
@@ -30,4 +30,12 @@ class City:
       result = calculate(dict, operation)
     self.fetched = True
     return result
-    
+        
+# For testing only
+# if __name__ == "__main__":
+#     cityMatters = Matters(name = "chicago", dictList = matterListDict)
+#     cityMatters.calculate(operation = 0)
+#     cityMatters.calculate(operation = 1)
+#     cityMatters.calculate(operation = 2)
+#     cityMatters.fetchDataFromAPI()
+#     print(cityMatters.fetched)
