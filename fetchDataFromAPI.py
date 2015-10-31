@@ -19,6 +19,7 @@ def fetchDataFromAPI(client, data_type):
     mpb = ttk.Progressbar(mGui,orient ="horizontal", length = 200, mode ="determinate")
     mpb.pack(padx = 10, pady = 10)
     mystr = str()
+    print(mystr)
     try:
         import urllib.request as urllib2
     except ImportError:
@@ -37,7 +38,10 @@ def fetchDataFromAPI(client, data_type):
                     break
                 ctr +=1
                 mpb["value"] = ctr
-                mystr+=str(chunk)
+                #mystr+=str(chunk)
+                chunkStr = str(chunk)
+                chunkStr = chunkStr[2:len(chunkStr)-1]
+                mystr+=chunkStr
                 file.write(str(chunk))
                 mpb.update()
         mGui.destroy()
