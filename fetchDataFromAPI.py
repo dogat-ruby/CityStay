@@ -1,5 +1,6 @@
-
+# coding: utf-8
 import httplib2, gc, sys
+import json, yaml, ast
 
 try:
   import Tkinter              
@@ -14,10 +15,10 @@ except ImportError:
 def fetchDataFromAPI(client, data_type):
     url = 'http://webapi.legistar.com/v1/%s/%s' % (client, data_type)
     mGui = Tkinter.Tk()
-    mGui.geometry('450x50')
+    mGui.geometry('300x40')
     mGui.title('Download Progress')
     mpb = ttk.Progressbar(mGui,orient ="horizontal", length = 200, mode ="determinate")
-    mpb.pack()
+    mpb.pack(padx = 10, pady = 10)
     mystr = str()
     try:
         import urllib.request as urllib2
@@ -37,11 +38,18 @@ def fetchDataFromAPI(client, data_type):
                     break
                 ctr +=1
                 mpb["value"] = ctr
-                mystr+=str(chunk)
-                file.write(str(chunk))
+                chunkStr = str(chunk)
+                chunkStr = chunkStr[2:len(chunkStr)-1]
+                mystr+=chunkStr
+                #~ if ctr == 1:
+                #~ print(chunkStr)
+                #~ elif ctr ==2:
+                #~ print(chunkStr)
+                #file.write(str(chunk))
                 mpb.update()
+                #json.dump(mystr, file)
         mGui.destroy()
-        mGui.mainloop()
+        #mGui.mainloop()
         f.close()
         gc.collect()    
     except urllib2.HTTPError as e:
@@ -51,6 +59,21 @@ def fetchDataFromAPI(client, data_type):
     except Exception:
         import traceback
         return str(traceback.format_exc())
-    return mystr
+    
+    #dictStr = ast.literal_eval(mystr)
+    newStr = mystr.replace("\\'", "")
+    newStr = newStr.replace('\\"', '"')
+    #dictStr = yaml.load(newStr)
+    #partStr = newStr[111800:112000]
+    #partStr = newStr[863180:863200]
+    #print(partStr)
+    #dictStr = dict(newStr)
+    #dictStr = yaml.load(newStr)
+    dictStr = json.loads(newStr)
 
+    #print(dictStr)
+    return dictStr
 
+if __name__ == "__main__":
+    print("Hello")
+    fetchDataFromAPI("chicago", "matters")
