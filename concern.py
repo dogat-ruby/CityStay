@@ -37,7 +37,6 @@ class Matter(Concern):
     for record in dict:
       id = int(record['RecordId'])
       if Matter.select().where(Matter.record_id == id, Matter.city_name == city_name ).count() > 0:
-        print("Duplicate id {0}".format(id))
         skip_count +=1
         continue
         
@@ -73,7 +72,7 @@ class Matter(Concern):
         'MatterTypeName': record.type_name,
         'MatterCityName': record.city_name
       })
-    print(dict)  
+    # print(dict)  
     return dict
 
   def calculate(list_of_dict, operation = 0):
