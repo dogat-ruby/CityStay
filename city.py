@@ -1,85 +1,73 @@
 # coding: utf-8
 import fetchDataFromAPI as API
-from calculations import *
-matterListDict = list_of_dict
+from peewee import *
+from concern import *
+
+def sanitize_dict(dictionary):
+  result = []
+  for d in dictionary:
+    r = dict(d)
+    for key,value in d.items():
+      new_key = key[6:]
+      if new_key in Matter.required_keys():
+        final_value = (None if value == "null" else value)
+        final_key  = ("RecordId" if new_key == "Id" else new_key)
+        r[final_key] = final_value
+      del r[key]
+    result.append(r)
+  return result
+  
+def pushToDb(dict,city_name):
+  updated_dict = sanitize_dict(dict)
+  print("Pushing Data to DB: {0}".format(city_name))
+  Matter.create_with_dict(updated_dict, city_name)
 
 # Parent class
 # Given that children share same methods/functions, I think it’s
 # okay to declare methods here (does not have to be though), even if
 # they are empty.
 class City:
-    def __init__(self, name):
-        self.name = name
-        self.fetched = False
-    def fetchDataFromAPI(self):
-        return # (XML file)
-    def parseXML(self):
-        return # (list of dicts)
-    def pushToSQL(self):
-        return #Boolean: to indicate if okay or not?
-    def fetchFromSQL(self):
-        return # (list of dicts)
-    def updateRequest(self):
-        if not self.fetched:
-            self.fetchDataFromAPI()
-            #city.create(dict)
-            #dict = fetchFromSQL(city)
-        results = []
-        for op in range(0, 3):
-            results.append(self.calculate(operation = op))
-        return results
-			
+  def __init__(self, name):
+    self.name = name
+    self.list_of_dict = []
+    self.fetched = False
 
-# Matters: child of City
-class Matters(City):
-    def __init__(self, name):
-        self.name = name
-        self.list_of_dict = []
-        self.fetched = False
-        #print("Matters")
-    def fetchDataFromAPI(self, category = "matters"):
-        self.list_of_dict = API.fetchDataFromAPI(self.name, category)
-        self.fetched = True
-        return
-    def calculate(self, operation = 0):
-        if operation == 0:
-            # Item 1
-            dictTypeNumber = get_Matter_Type_Name()
-            #print('\nThe type and number of matter types are:')
-            #print(dictTypeNumber)	
-            dictTypeDuration = get_Matter_Intro_Agenda()
-            #print('\nThe total number of days per type:')
-            #print(dictTypeDuration)
-            dictTypeAverageDuration = getAverageDurationPerType(dictTypeNumber, dictTypeDuration)
-            #print('\n1) The average duration (in days) per type:')
-            #print(dictTypeAverageDuration)
-            return dictTypeAverageDuration
-        elif operation == 1:
-            # Item 2
-            dictBodyNumber = get_Matter_Body_Name()
-            #print('\n3) Number of files per body:')
-            #print(dictBodyNumber)
-            return dictBodyNumber
-        elif operation == 2:
-            # Item 3
-            dictTypeNumber = get_Matter_Type_Name()
-            #print('\nThe type and number of matter types are:')
-            #print(dictTypeNumber)
-            dictTypeStatus = get_Matter_Status()
-            #print('\n2) Number of similar statuses per type of matter:')
-            #print(dictTypeStatus)
-            return [dictTypeNumber, dictTypeStatus]
+  def parseXML(self):
+    return # (list of dicts)
 
-# Events: child of City
-class Events(City):
-    def __init__(self):
-        print("Events")
-        
+  def updateRequest(self):
+    if not self.fetched:
+      print(">>> Fetch Data From API")
+      self.fetchDataFromAPI()
+    else:
+      print(">>> Fetch Data From Database")
+      self.fetchFromDb()
+
+    results = []
+    for op in range(0, 3):
+      results.append(self.calculate(operation = op))
+    return results
+
+  def fetchDataFromAPI(self, category = "matters"):
+    print("fetching {0}, {1}".format(self.name, category))
+    self.list_of_dict = API.fetchDataFromAPI(self.name, category)
+    pushToDb(self.list_of_dict, self.name)
+    self.fetched = True
+    return
+
+  def fetchFromDb(self):
+    self.list_of_dict = Matter.build_dict(self.name)
+    return self.list_of_dict
+
+  def calculate(self, operation):
+    result = Matter.calculate(self.list_of_dict, operation)
+    return result
+
 # For testing only
-if __name__ == "__main__":
-    cityMatters = Matters(name = "chicago", dictList = matterListDict)
-    cityMatters.calculate(operation = 0)
-    cityMatters.calculate(operation = 1)
-    cityMatters.calculate(operation = 2)
-    cityMatters.fetchDataFromAPI()
-    print(cityMatters.fetched)
+# if __name__ == "__main__":
+#     cityMatters = Matters(name = "chicago", dictList = matterListDict)
+#     cityMatters.calculate(operation = 0)
+#     cityMatters.calculate(operation = 1)
+#     cityMatters.calculate(operation = 2)
+#     cityMatters.fetchDataFromAPI()
+#     print(cityMatters.fetched)

@@ -1,0 +1,40 @@
+*.box
+*.swp
+*.un~
+*.vagrant
+.#*
+.idea
+.tm_properties
+.tags*
+bin
+log
+tmp
+tags
+
+# Python cache
+__pycache__
+
+# User-specific files
+*.suo
+*.user
+
+# Mac desktop service store files
+.DS_Store
+/src/3fjtrdxe.dt5
+/src/j1xrvkr3.mrf
+TAGS
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Local database
+database.db
+
+# Others

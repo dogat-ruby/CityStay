@@ -1,4 +1,4 @@
-
+# coding: utf-8
 import httplib2, gc, sys
 import json
 
@@ -29,6 +29,7 @@ def fetchDataFromAPI(client, data_type):
         chunkcount = (totalsize // chunksize) + 1
         mpb["maximum"] = chunkcount
         ctr = 0
+
         for chunk in iter(lambda: f.read(chunksize), ''):
             if not chunk:
                 break
