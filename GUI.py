@@ -4,19 +4,24 @@ import ttk as ttk
 #from tkinter import Tk, StringVar, ttk
 from city import *
 
+citiesDict = {}
+
 CITIES = [
     "Seattle",
     "Chicago",
+    "Pittsburgh"
 ]
 
 def generateReport(city):
-    cityMatters = Matters(city.get(), matterListDict)
-    results_0 = cityMatters.calculate(0)
-    results_1 = cityMatters.calculate(1)
-    (results_2_0, results_2_1) = cityMatters.calculate(2)
+    #cityMatters = Matters(city.get(), matterListDict)
+    results = []
+    results = citiesDict[city.get()].updateRequest()
+
+    #~ results_0 = cityMatters.calculate(0)
+    #~ results_1 = cityMatters.calculate(1)
+    #~ (results_2_0, results_2_1) = cityMatters.calculate(2)
     
     #~ messagebox.showinfo(title="City", message="City: " + str(city.get()) + "\nCategory: " + str(cat.get()))
-    tk.Label(frame, text="   ", font="Symbol 11").grid(row=3)
     
     notebook = ttk.Notebook(frame)
     tab = []
@@ -39,13 +44,13 @@ def generateReport(city):
         #canvas.grid(row=rowNb+1, column=0, columnspan=6, sticky=tk.W)
         canvas[i].pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         
-    notebook.grid(row=4, column=0, columnspan=4, sticky=tk.W)
+    notebook.grid(row=3, column=0, columnspan=4, sticky=tk.W)
     
     # First Tab    
     print('Average Time Before Meeting'),
     text = ''
-    for key in sorted(results_0):
-        text += key + ' : ' + str(results_0[key]) + ' days' + '\n'
+    for key in sorted(results[0]):
+        text += key + ' : ' + str(results[0][key]) + ' days' + '\n'
         #print(text)
         #tk.Label(tab1, text=text, font="Symbol 11").grid(row=rowNb+1, column=0, columnspan=6, sticky=tk.W)
     #print(text)
@@ -56,8 +61,8 @@ def generateReport(city):
     # Second Tab
     print('\nNumber of Files Per Body'),
     text = ''
-    for key in sorted(results_1):
-        text += key + ' : ' + str(results_1[key]) + '\n'
+    for key in sorted(results[1]):
+        text += key + ' : ' + str(results[1][key]) + '\n'
         #print(text)
         #tk.Label(tab2, text=text, font="Symbol 11").grid(row=rowNb+1, column=0, columnspan=6, sticky=tk.W)
     #print(text)
@@ -68,18 +73,18 @@ def generateReport(city):
     # Third Tab
     print('\nStatus Per Type of File'),
     row = 10
-    for key in sorted(results_2_0):
+    for key in sorted(results[2][0]):
         text_header = ''
         text_body = ''
         
         # Header
         canvas_id = canvas[2].create_text(5, row, font="Symbol 11 bold", anchor = "nw")
-        text_header = key + ' : ' + str(results_2_0[key]) + '\n'
+        text_header = key + ' : ' + str(results[2][0][key]) + '\n'
         canvas[2].itemconfig(canvas_id, text=text_header)
         row += 18
         
         # Body
-        key_dict = results_2_1[key]
+        key_dict = results[2][1][key]
         canvas_id = canvas[2].create_text(5, row, font="Symbol 11", anchor = "nw")
         count = 0
         for status in sorted(key_dict):
@@ -96,20 +101,24 @@ def generateReport(city):
 # Create tkinter window
 root = tk.Tk()
 root.title('City Stay')
+root.resizable(0, 0)
+root.minsize(width=400, height=40)
 # Create tkinter frame
 frame = tk.Frame(root, width=400, height=400)
 frame.option_add('*Dialog.msg.font', 'Symbol 11')
 frame.pack()
 
+tk.Label(frame, text= "   ", font="Symbol 11").grid(row=0, column=0, sticky=tk.W+tk.E)
+
 # Cities
-labelCity = tk.Label(frame, text= " Select City:  ", font="Symbol 11").grid(row=0, column=0, sticky=tk.W)
+labelCity = tk.Label(frame, text= " Select City:  ", font="Symbol 11").grid(row=1, column=0, sticky=tk.W)
 # Create city drop list
 cityName = tk.StringVar(frame)
 cityName.set(CITIES[0]) # Default value
 drop = tk.OptionMenu(frame, cityName, *CITIES)
 drop.config(font=('Symbol',11),width=12)
-drop['menu'].config(font=('Symbol',11),)
-drop.grid(row=0, column=1, sticky=tk.W)
+drop['menu'].config(font=('Symbol',11))
+drop.grid(row=1, column=1, sticky=tk.W)
 
 
 # Categories
@@ -123,11 +132,16 @@ drop.grid(row=0, column=1, sticky=tk.W)
 # Column Separation
 #tk.Label(frame, text="  ", font="Symbol 11").grid(row=0, column=2)
 
-# Generate button
-genButton = tk.Button(frame, text="Generate Report", font="Symbol 12 bold", command=lambda: generateReport(city=cityName))
-genButton.grid(row=0, column=2, sticky=tk.E)
-
 # Prevent Tkinter to resize...
-tk.Label(frame, text="  ", font="Symbol 11").grid(row=0, column=3)
+tk.Label(frame, text="  ", font="Symbol 11").grid(row=1, column=2)
+
+# Generate button
+genButton = tk.Button(frame, width=22, text="Generate Report", font="Symbol 12 bold", command=lambda: generateReport(city=cityName))
+genButton.grid(row=1, column=3, sticky=tk.E)
+
+tk.Label(frame, text="   ", font="Symbol 11").grid(row=2)
+
+for item in CITIES:
+    citiesDict[item] = Matters(item)
 
 root.mainloop()

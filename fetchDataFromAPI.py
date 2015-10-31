@@ -14,10 +14,10 @@ except ImportError:
 def fetchDataFromAPI(client, data_type):
     url = 'http://webapi.legistar.com/v1/%s/%s' % (client, data_type)
     mGui = Tkinter.Tk()
-    mGui.geometry('450x50')
+    mGui.geometry('300x40')
     mGui.title('Download Progress')
     mpb = ttk.Progressbar(mGui,orient ="horizontal", length = 200, mode ="determinate")
-    mpb.pack()
+    mpb.pack(padx = 10, pady = 10)
     mystr = str()
     try:
         import urllib.request as urllib2
@@ -41,7 +41,7 @@ def fetchDataFromAPI(client, data_type):
                 file.write(str(chunk))
                 mpb.update()
         mGui.destroy()
-        mGui.mainloop()
+        #mGui.mainloop()
         f.close()
         gc.collect()    
     except urllib2.HTTPError as e:
@@ -51,6 +51,9 @@ def fetchDataFromAPI(client, data_type):
     except Exception:
         import traceback
         return str(traceback.format_exc())
+    #print(mystr)
     return mystr
 
-
+if __name__ == "__main__":
+    print("Hello")
+    fetchDataFromAPI("chicago", "matters")

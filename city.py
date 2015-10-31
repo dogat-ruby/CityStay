@@ -19,29 +19,26 @@ class City:
         return #Boolean: to indicate if okay or not?
     def fetchFromSQL(self):
         return # (list of dicts)
-    def calculate(self):
-        return
-    def updateRequest(city_name, operation):
-        self.name = city_name
+    def updateRequest(self):
         if not self.fetched:
-            xmlFile = fetchDataFromAPI(city)
-            dict = parseXML(xmlFile)
-            city.create(dict)
-        else:
-            dict = fetchFromSQL(city)
-            result = calculate(dict, operation)
-        self.fetched = True
-        return result
+            self.fetchDataFromAPI()
+            #city.create(dict)
+            #dict = fetchFromSQL(city)
+        results = []
+        for op in range(0, 3):
+            results.append(self.calculate(operation = op))
+        return results
 			
 
 # Matters: child of City
 class Matters(City):
-    def __init__(self, name, dictList):
+    def __init__(self, name):
         self.name = name
-        self.list_of_dict = dictList
-        #("Matters")
+        self.list_of_dict = []
+        self.fetched = False
+        #print("Matters")
     def fetchDataFromAPI(self, category = "matters"):
-        API.fetchDataFromAPI(self.name, category)
+        self.list_of_dict = API.fetchDataFromAPI(self.name, category)
         self.fetched = True
         return
     def calculate(self, operation = 0):
@@ -71,7 +68,7 @@ class Matters(City):
             dictTypeStatus = get_Matter_Status()
             #print('\n2) Number of similar statuses per type of matter:')
             #print(dictTypeStatus)
-            return dictTypeNumber, dictTypeStatus
+            return [dictTypeNumber, dictTypeStatus]
 
 # Events: child of City
 class Events(City):
