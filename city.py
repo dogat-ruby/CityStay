@@ -37,8 +37,10 @@ class City:
 
   def updateRequest(self):
     if not self.fetched:
+      print(">>> Fetch Data From API")
       self.fetchDataFromAPI()
     else:
+      print(">>> Fetch Data From Database")
       self.fetchFromDb()
 
     results = []

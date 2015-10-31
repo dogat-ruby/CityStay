@@ -36,7 +36,8 @@ class Matter(Concern):
     print("- Importing {0} records".format(len(dict)))
     for record in dict:
       id = int(record['RecordId'])
-      if Matter.select().where(Matter.record_id == id).count() > 0:
+      if Matter.select().where(Matter.record_id == id, Matter.city_name == city_name ).count() > 0:
+        print("Duplicate id {0}".format(id))
         skip_count +=1
         continue
         
@@ -73,7 +74,7 @@ class Matter(Concern):
         'MatterCityName': record.city_name
       })
     print(dict)  
-    dict
+    return dict
 
   def calculate(list_of_dict, operation = 0):
     if operation == 0:
