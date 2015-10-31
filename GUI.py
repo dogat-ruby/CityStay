@@ -13,6 +13,7 @@ CITIES = [
 ]
 
 def generateReport(city):
+    print('\n>', city.get(), '\n')
     #cityMatters = Matters(city.get(), matterListDict)
     results = []
     results = citiesDict[city.get()].updateRequest()
@@ -46,6 +47,7 @@ def generateReport(city):
         
     notebook.grid(row=3, column=0, columnspan=4, sticky=tk.W)
     
+    text_offset = 10
     # First Tab    
     print('Average Time Before Meeting'),
     text = ''
@@ -54,7 +56,7 @@ def generateReport(city):
         #print(text)
         #tk.Label(tab1, text=text, font="Symbol 11").grid(row=rowNb+1, column=0, columnspan=6, sticky=tk.W)
     #print(text)
-    canvas_id = canvas[0].create_text(0, 10, font="Symbol 11", anchor = "nw")
+    canvas_id = canvas[0].create_text(text_offset, 10, font="Symbol 11", anchor = "nw")
     canvas[0].itemconfig(canvas_id, text=text)
     print('... Done')
     
@@ -66,7 +68,7 @@ def generateReport(city):
         #print(text)
         #tk.Label(tab2, text=text, font="Symbol 11").grid(row=rowNb+1, column=0, columnspan=6, sticky=tk.W)
     #print(text)
-    canvas_id = canvas[1].create_text(0, 10, font="Symbol 11", anchor = "nw")
+    canvas_id = canvas[1].create_text(text_offset, 10, font="Symbol 11", anchor = "nw")
     canvas[1].itemconfig(canvas_id, text=text)
     print('... Done')
     
@@ -78,14 +80,14 @@ def generateReport(city):
         text_body = ''
         
         # Header
-        canvas_id = canvas[2].create_text(5, row, font="Symbol 11 bold", anchor = "nw")
+        canvas_id = canvas[2].create_text(text_offset+5, row, font="Symbol 11 bold", anchor = "nw")
         text_header = key + ' : ' + str(results[2][0][key]) + '\n'
         canvas[2].itemconfig(canvas_id, text=text_header)
         row += 18
         
         # Body
         key_dict = results[2][1][key]
-        canvas_id = canvas[2].create_text(5, row, font="Symbol 11", anchor = "nw")
+        canvas_id = canvas[2].create_text(text_offset+5, row, font="Symbol 11", anchor = "nw")
         count = 0
         for status in sorted(key_dict):
             count += 1
