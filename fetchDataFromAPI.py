@@ -1,5 +1,6 @@
 
 import httplib2, gc, sys
+import json, yaml, ast
 
 try:
   import Tkinter              
@@ -19,7 +20,6 @@ def fetchDataFromAPI(client, data_type):
     mpb = ttk.Progressbar(mGui,orient ="horizontal", length = 200, mode ="determinate")
     mpb.pack(padx = 10, pady = 10)
     mystr = str()
-    print(mystr)
     try:
         import urllib.request as urllib2
     except ImportError:
@@ -42,8 +42,13 @@ def fetchDataFromAPI(client, data_type):
                 chunkStr = str(chunk)
                 chunkStr = chunkStr[2:len(chunkStr)-1]
                 mystr+=chunkStr
-                file.write(str(chunk))
+                #~ if ctr == 1:
+                    #~ print(chunkStr)
+                #~ elif ctr ==2:
+                    #~ print(chunkStr)
+                #file.write(str(chunk))
                 mpb.update()
+                #json.dump(mystr, file)
         mGui.destroy()
         #mGui.mainloop()
         f.close()
@@ -55,8 +60,19 @@ def fetchDataFromAPI(client, data_type):
     except Exception:
         import traceback
         return str(traceback.format_exc())
-    #print(mystr)
-    return mystr
+        
+    #dictStr = ast.literal_eval(mystr)
+    newStr = mystr.replace("\\'", "")
+    newStr = newStr.replace('\\"', '"')
+    #dictStr = yaml.load(newStr)
+    #partStr = newStr[111800:112000]
+    #partStr = newStr[863180:863200]
+    #print(partStr)
+    #dictStr = dict(newStr)
+    #dictStr = yaml.load(newStr)
+    dictStr = json.loads(newStr)
+    #print(dictStr)
+    return dictStr
 
 if __name__ == "__main__":
     print("Hello")
