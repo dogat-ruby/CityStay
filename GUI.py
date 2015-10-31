@@ -4,7 +4,6 @@ import ttk as ttk
 from peewee import *
 from concern import *
 from city import *
-#from tkinter import Tk, StringVar, ttk
 
 # Dictionary of city classes
 citiesDict = {}
@@ -13,7 +12,7 @@ citiesDict = {}
 CITIES = [
   "Seattle",
   "Chicago",
-  "Pittsburg"
+  "Pittsburgh"
 ]
 
 db = SqliteDatabase('database.db', threadlocals=True)
@@ -66,7 +65,7 @@ def generateReport(city):
   text = ''
   for key in sorted(results[0]):
       text += key + ' : ' + str(results[0][key]) + ' days' + '\n'
-  canvas_id = canvas[0].create_text(text_offset, 10, font="Symbol 11", anchor = "nw")
+  canvas_id = canvas[0].create_text(text_offset, 10, font="Segoe 11", anchor = "nw")
   canvas[0].itemconfig(canvas_id, text=text)
   print('... Done')
   
@@ -75,7 +74,7 @@ def generateReport(city):
   text = ''
   for key in sorted(results[1]):
       text += key + ' : ' + str(results[1][key]) + '\n'
-  canvas_id = canvas[1].create_text(text_offset, 10, font="Symbol 11", anchor = "nw")
+  canvas_id = canvas[1].create_text(text_offset, 10, font="Segoe 11", anchor = "nw")
   canvas[1].itemconfig(canvas_id, text=text)
   print('... Done')
   
