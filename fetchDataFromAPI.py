@@ -29,20 +29,17 @@ def fetchDataFromAPI(client, data_type):
         chunkcount = (totalsize // chunksize) + 1
         mpb["maximum"] = chunkcount
         ctr = 0
-        with open(str(client) + '_' + str(data_type), 'w') as file:
-            for chunk in iter(lambda: f.read(chunksize), ''):
-                if not chunk:
-                    break
-                ctr +=1
-                mpb["value"] = ctr
-                #mystr+=str(chunk)
-                chunkStr = str(chunk)
-                chunkStr = chunkStr[2:len(chunkStr)-1]
-                mystr+=chunkStr
-                #file.write(str(chunk)) #Not needed
-                mpb.update()
+        for chunk in iter(lambda: f.read(chunksize), ''):
+            if not chunk:
+                break
+            ctr +=1
+            mpb["value"] = ctr
+            #mystr+=str(chunk)
+            chunkStr = str(chunk)
+            chunkStr = chunkStr[2:len(chunkStr)-1]
+            mystr+=chunkStr
+            mpb.update()
         mGui.destroy()
-        f.close()
         gc.collect()    
     except urllib2.HTTPError as e:
         return str(e.code)
