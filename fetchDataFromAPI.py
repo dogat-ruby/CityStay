@@ -1,6 +1,6 @@
 
 import httplib2, gc, sys
-import json, yaml, ast
+import json
 
 try:
   import Tkinter              
@@ -8,9 +8,6 @@ try:
 except ImportError:
   import tkinter as Tkinter   
   import tkinter.ttk as ttk
-
-#def __init__(self, mystr=str()):
-#   self.mystr = mystr
 
 def fetchDataFromAPI(client, data_type):
     url = 'http://webapi.legistar.com/v1/%s/%s' % (client, data_type)
@@ -42,15 +39,9 @@ def fetchDataFromAPI(client, data_type):
                 chunkStr = str(chunk)
                 chunkStr = chunkStr[2:len(chunkStr)-1]
                 mystr+=chunkStr
-                #~ if ctr == 1:
-                    #~ print(chunkStr)
-                #~ elif ctr ==2:
-                    #~ print(chunkStr)
-                #file.write(str(chunk))
+                #file.write(str(chunk)) #Not needed
                 mpb.update()
-                #json.dump(mystr, file)
         mGui.destroy()
-        #mGui.mainloop()
         f.close()
         gc.collect()    
     except urllib2.HTTPError as e:
@@ -61,19 +52,18 @@ def fetchDataFromAPI(client, data_type):
         import traceback
         return str(traceback.format_exc())
         
-    #dictStr = ast.literal_eval(mystr)
+    # Replacing "escape" chars    
     newStr = mystr.replace("\\'", "")
     newStr = newStr.replace('\\"', '"')
-    #dictStr = yaml.load(newStr)
-    #partStr = newStr[111800:112000]
-    #partStr = newStr[863180:863200]
-    #print(partStr)
-    #dictStr = dict(newStr)
-    #dictStr = yaml.load(newStr)
+    newStr = newStr.replace("\\x", "")
+    # Convert to dictionary
     dictStr = json.loads(newStr)
-    #print(dictStr)
     return dictStr
 
 if __name__ == "__main__":
-    print("Hello")
+    fetchDataFromAPI("seattle", "matters")
+    print("Seattle: Success")
     fetchDataFromAPI("chicago", "matters")
+    print("Chicago: Success")
+    fetchDataFromAPI("pittsburgh", "matters")
+    print("Pittsburgh: Success")
