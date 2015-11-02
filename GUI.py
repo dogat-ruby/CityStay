@@ -18,18 +18,19 @@ CITIES = [
 db = SqliteDatabase('database.db', threadlocals=True)
 db.connect()
 
+# ----- Drop tables -----
+#~ Matter.drop_table([True])
+#~ Event.drop_table([True])
+
 # ---- Create tables ----
 Matter.create_table([True])
 Event.create_table([True])
 
-# ----- Drop tables -----
-# Matter.drop_table([True])
-# Event.drop_table([True])
-
 # Generate report function
 def generateReport(city):
   # Debug
-  print('\n>', city.get(), '\n')
+  strCity = '\n> ' + city.get() + '\n'
+  print(colored(strCity, 'blue', attrs=['bold']))
 
   # Grabbing results
   results = []
@@ -61,25 +62,25 @@ def generateReport(city):
   text_offset = 10
 
   # First Tab    
-  print('Average Time Before Meeting'),
+  print('\n>>> Tkinter: Average Time Before Meeting')
   text = ''
   for key in sorted(results[0]):
       text += key + ' : ' + str(results[0][key]) + ' days' + '\n'
   canvas_id = canvas[0].create_text(text_offset, 10, font="Segoe 11", anchor = "nw")
   canvas[0].itemconfig(canvas_id, text=text)
-  print('... Done')
+  print(colored('... Done ' + u'\u2713', 'green', attrs=['bold']))
   
   # Second Tab
-  print('\nNumber of Files Per Body'),
+  print('\n>>> Tkinter: Number of Files Per Body'),
   text = ''
   for key in sorted(results[1]):
       text += key + ' : ' + str(results[1][key]) + '\n'
   canvas_id = canvas[1].create_text(text_offset, 10, font="Segoe 11", anchor = "nw")
   canvas[1].itemconfig(canvas_id, text=text)
-  print('... Done')
+  print(colored('... Done ' + u'\u2713', 'green', attrs=['bold']))
   
   # Third Tab
-  print('\nStatus Per Type of File'),
+  print('\n>>> Tkinter: Status Per Type of File'),
   row = 10
   for key in sorted(results[2][0]):
       text_header = ''
@@ -101,7 +102,7 @@ def generateReport(city):
       canvas[2].itemconfig(canvas_id, text=text_body)
       
       row += count * 16 + 5
-  print('... Done')
+  print(colored('... Done ' + u'\u2713', 'green', attrs=['bold']))
           
   notebook.select(tab[0])
     

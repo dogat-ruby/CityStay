@@ -3,6 +3,7 @@ import re
 import datetime
 from peewee import *
 from calculations import *
+from termcolor import colored
 
 db = SqliteDatabase('database.db')
 
@@ -33,7 +34,7 @@ class Matter(Concern):
   def create_with_dict(dict, city_name):
     skip_count = 0
     # Another way to mass insert is Model.create(*dict)
-    print("- Importing {0} records".format(len(dict)))
+    print(colored("- Importing {0} records".format(len(dict)),'green'))
     for record in dict:
       id = int(record['RecordId'])
       if Matter.select().where(Matter.record_id == id, Matter.city_name == city_name ).count() > 0:
@@ -53,7 +54,7 @@ class Matter(Concern):
         city_name = city_name
       ).execute()
 
-    print("  > Skipped #{0} records".format(skip_count))
+    print(colored("  > Skipped #{0} records".format(skip_count), 'magenta'))
 
   def build_dict(city_name):
     dict = []
@@ -85,8 +86,8 @@ class Matter(Concern):
       #print('\nThe total number of days per type:')
       #print(dictTypeDuration)
       dictTypeAverageDuration = getAverageDurationPerType(dictTypeNumber, dictTypeDuration)
-      print('\n1) The average duration (in days) per type:')
-      print(dictTypeAverageDuration)
+      #print('\n1) The average duration (in days) per type:')
+      #print(dictTypeAverageDuration)
       return dictTypeAverageDuration
     elif operation == 1:
       # Item 2

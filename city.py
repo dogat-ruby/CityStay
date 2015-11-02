@@ -37,10 +37,10 @@ class City:
 
   def updateRequest(self):
     if not self.fetched:
-      print(">>> Fetch Data From API")
+      print(colored(">>> Fetch Data From API", 'cyan', attrs=['bold']))
       self.fetchDataFromAPI()
     else:
-      print(">>> Fetch Data From Database")
+      print(colored(">>> Fetch Data From Database", 'cyan', attrs=['bold']))
       self.fetchFromDb()
 
     results = []
@@ -49,7 +49,7 @@ class City:
     return results
 
   def fetchDataFromAPI(self, category = "matters"):
-    print("fetching {0}, {1}".format(self.name, category))
+    print("Fetching {0}, {1}".format(self.name, category))
     self.list_of_dict = API.fetchDataFromAPI(self.name, category)
     pushToDb(self.list_of_dict, self.name)
     self.fetched = True
